@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- bean definitions here -->
+
+    <!--定义Bean，id属性值为bubbleTea1，指定Bean的实现类为BubbleTea1-->
+    <bean id="bubbleTea1" class="com.dingli.bean.constructor.BubbleTea1">
+        <!--为bubbleTea的属性注入值-->
+        <constructor-arg name="drinkName" value="红豆奶茶" />
+        <constructor-arg name="size" value="大杯" />
+        <constructor-arg name="ice" value="去冰" />
+        <constructor-arg name="sugar" value="3分糖" />
+    </bean>
+
+    <!--定义Bean，id属性值为shop1，指定Bean的实现类为Shop1-->
+    <bean id="shop1" class="com.dingli.bean.constructor.Shop1">
+        <!--为shop1属性注入值，其中ref属性赋值为Bean实例bubbleTea1-->
+        <constructor-arg name="shopName" value="小小奶茶店constructor" />
+        <constructor-arg name="bubbleTea1" ref="bubbleTea1" />
+    </bean>
+
+
+</beans>
