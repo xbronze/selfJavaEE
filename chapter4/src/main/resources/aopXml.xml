@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+	    http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- bean definitions here -->
+
+    <!--定义ProductImpl类的Bean-->
+    <bean id="productImpl" class="com.dingli.chapter4.xmlconfig.service.impl.ProductImpl"/>
+
+    <!--定义ProductAspect切面类的Bean-->
+    <bean id="productAspect" class="com.dingli.chapter4.xmlconfig.aspect.ProductAspect" />
+
+    <!-- 注意：要先 在文件中引入aop的命名空间，第5、8、9行-->
+    <!--配置AOP-->
+    <aop:config>
+        <!--配置切面-->
+        <aop:aspect ref="productAspect">
+            <!-- 配置切入点 -->
+            <aop:pointcut id="pointCut" expression="execution(* com.dingli.chapter4.xmlconfig.service.impl.ProductImpl.*(..))"/>
+            <!-- 配置通知 -->
+            <aop:before method="adviseBefore" pointcut-ref="pointCut"/>
+            <aop:around method="adviseAround" pointcut-ref="pointCut"/>
+            <aop:after method="adviseAfter" pointcut-ref="pointCut"/>
+            <aop:after-returning method="adviseReturn" pointcut-ref="pointCut"/>
+            <aop:after-throwing method="adviseThrow" pointcut-ref="pointCut" throwing="e"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
