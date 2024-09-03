@@ -1,4 +1,4 @@
-package com.dingli.bean.setter;
+package com.dingli.chapter3.bean.setter;
 
 /**
  * @author: xbronze

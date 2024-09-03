@@ -1,4 +1,4 @@
-package com.dingli.bean.constructor;
+package com.dingli.chapter3.bean.constructor;
 
 /**
  * @author: xbronze

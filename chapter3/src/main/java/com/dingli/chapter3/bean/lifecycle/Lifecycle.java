@@ -1,7 +1,4 @@
-package com.dingli.bean.lifecycle;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+package com.dingli.chapter3.bean.lifecycle;
 
 /**
  * @author: xbronze

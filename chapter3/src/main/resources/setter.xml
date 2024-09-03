@@ -9,7 +9,7 @@
     <!-- bean definitions here -->
 
 	<!--定义Bean，id属性值为bubbleTea，指定Bean的实现类为BubbleTea-->
-	<bean id="bubbleTea" class="com.dingli.bean.setter.BubbleTea">
+	<bean id="bubbleTea" class="com.dingli.chapter3.bean.setter.BubbleTea">
 		<!--为bubbleTea的属性注入值-->
 		<property name="drinkName" value="红豆奶茶" />
 		<property name="size" value="大杯" />
@@ -17,7 +17,7 @@
 		<property name="sugar" value="3分糖" />
 	</bean>
 
-	<bean id="shop" class="com.dingli.bean.setter.Shop">
+	<bean id="shop" class="com.dingli.chapter3.bean.setter.Shop">
 		<property name="shopName" value="小小奶茶店setter"/>
 		<property name="bubbleTea" ref="bubbleTea"/>
 	</bean>

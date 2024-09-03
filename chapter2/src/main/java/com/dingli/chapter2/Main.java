@@ -1,4 +1,4 @@
-package com.dingli;
+package com.dingli.chapter2;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

@@ -1,4 +1,4 @@
-package com.dingli.bean.lifecycle;
+package com.dingli.chapter3.bean.lifecycle;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -7,19 +7,20 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author: xbronze
- * @date: 2024-08-29 17:10
+ * @date: 2024-08-29 16:39
  * @description: TODO
  */
-public class LifecycleAnnotationTest {
+public class LifecycleTest {
 
     @Test
     public void test() {
         //加载lifecycle.xml配置文件
-        ApplicationContext context = new ClassPathXmlApplicationContext("annotation.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("lifecycle.xml");
         //获取Bean实例lifecycle
-        LifecycleAnnotation lifecycleAnnotation = context.getBean("lifecycleAnnotation", LifecycleAnnotation.class);
-        lifecycleAnnotation.print();
+        Lifecycle lifecycle = (Lifecycle)context.getBean("lifecycle");
+        lifecycle.print();
         //关闭容器
         ((AbstractApplicationContext) context).close();
+
     }
 }

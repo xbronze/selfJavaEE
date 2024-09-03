@@ -1,4 +1,4 @@
-package com.dingli;
+package com.dingli.chapter3;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;

@@ -1,4 +1,4 @@
-package com.dingli;
+package com.dingli.chapter3;
 
 /**
  * @author: xbronze

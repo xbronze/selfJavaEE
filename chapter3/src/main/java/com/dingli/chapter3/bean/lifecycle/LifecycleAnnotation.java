@@ -1,4 +1,4 @@
-package com.dingli.bean.lifecycle;
+package com.dingli.chapter3.bean.lifecycle;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

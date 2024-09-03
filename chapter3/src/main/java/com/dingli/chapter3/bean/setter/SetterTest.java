@@ -1,4 +1,4 @@
-package com.dingli.bean.constructor;
+package com.dingli.chapter3.bean.setter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -7,16 +7,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author: xbronze
- * @date: 2024-08-29 14:55
- * @description: 构造方法注入
+ * @date: 2024-08-29 14:43
+ * @description: setter方法注入
  */
-public class ConstructorTest {
+public class SetterTest {
 
     @Test
     public void test() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("constructor.xml");
-        Shop1 shop1 = context.getBean("shop1", Shop1.class);
-        shop1.showOrderInfo();
+        ApplicationContext context = new ClassPathXmlApplicationContext("setter.xml");
+        Shop shop = context.getBean("shop", Shop.class);
+        shop.showOrderInfo();
         ((AbstractApplicationContext)context).close();
     }
 }

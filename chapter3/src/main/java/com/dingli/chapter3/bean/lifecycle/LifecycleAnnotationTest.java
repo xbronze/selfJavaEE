@@ -1,4 +1,4 @@
-package com.dingli.bean.annotation;
+package com.dingli.chapter3.bean.lifecycle;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -7,16 +7,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author: xbronze
- * @date: 2024-08-29 16:22
- * @description: 注解方式注入
+ * @date: 2024-08-29 17:10
+ * @description: TODO
  */
-public class AnnotationTest {
+public class LifecycleAnnotationTest {
 
     @Test
     public void test() {
+        //加载lifecycle.xml配置文件
         ApplicationContext context = new ClassPathXmlApplicationContext("annotation.xml");
-        Shop2 shop2 = context.getBean("shop2", Shop2.class);
-        shop2.showOrderInfo();
+        //获取Bean实例lifecycle
+        LifecycleAnnotation lifecycleAnnotation = context.getBean("lifecycleAnnotation", LifecycleAnnotation.class);
+        lifecycleAnnotation.print();
+        //关闭容器
         ((AbstractApplicationContext) context).close();
     }
 }

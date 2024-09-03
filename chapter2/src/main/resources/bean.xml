@@ -8,5 +8,5 @@
 
     <!-- bean definitions here -->
     <!-- 配置需要被Spring容器管理的类对象 -->
-    <bean id="user" class="com.dingli.User" />
+    <bean id="user" class="com.dingli.chapter2.User" />
 </beans>

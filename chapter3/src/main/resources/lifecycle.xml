@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="lifecycle" class="com.dingli.bean.lifecycle.Lifecycle" init-method="init" destroy-method="destroy"
-        scope="prototype">
+    <bean id="lifecycle" class="com.dingli.chapter3.bean.lifecycle.Lifecycle" init-method="init" destroy-method="destroy"
+          scope="prototype">
         <property name="content" value="生命周期测试"/>
     </bean>
 </beans>

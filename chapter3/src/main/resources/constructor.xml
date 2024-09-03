@@ -9,7 +9,7 @@
     <!-- bean definitions here -->
 
     <!--定义Bean，id属性值为bubbleTea1，指定Bean的实现类为BubbleTea1-->
-    <bean id="bubbleTea1" class="com.dingli.bean.constructor.BubbleTea1">
+    <bean id="bubbleTea1" class="com.dingli.chapter3.bean.constructor.BubbleTea1">
         <!--为bubbleTea的属性注入值-->
         <constructor-arg name="drinkName" value="红豆奶茶" />
         <constructor-arg name="size" value="大杯" />
@@ -18,7 +18,7 @@
     </bean>
 
     <!--定义Bean，id属性值为shop1，指定Bean的实现类为Shop1-->
-    <bean id="shop1" class="com.dingli.bean.constructor.Shop1">
+    <bean id="shop1" class="com.dingli.chapter3.bean.constructor.Shop1">
         <!--为shop1属性注入值，其中ref属性赋值为Bean实例bubbleTea1-->
         <constructor-arg name="shopName" value="小小奶茶店constructor" />
         <constructor-arg name="bubbleTea1" ref="bubbleTea1" />
