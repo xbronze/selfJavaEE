@@ -18,3 +18,10 @@
 保存tomcat-users.xml文件。
 
 重启Tomcat服务器。
+
+
+
+## Spring getBean() 方式获取接口实现类的实例化对象，报错：Exception in thread "main" org.springframework.beans.factory.BeanNotOfRequiredTypeException: Bean named 'productImpl' is expected to be of type 'com.dingli.chapter4.xmlconfig.service.impl.ProductImpl' but was actually of type 'jdk.proxy2.$Proxy3'
+
+待补充...
+

@@ -1,5 +1,16 @@
 ## 笔记
 
+### Java SE和Java EE的联系和区别？
+
+- Java SE（Java Platform，Standard Edition）: Java 平台标准版，Java 编程语言的基础，它包含了支持 Java 应用程序开发和运行的核心类库以及虚拟机等核心组件。Java SE 可以用于构建桌面应用程序或简单的服务器应用程序。
+
+- Java EE（Java Platform, Enterprise Edition ）：Java 平台企业版，建立在 Java SE 的基础上，包含了支持企业级应用程序开发和部署的标准和规范（比如 Servlet、JSP、EJB、JDBC、JPA、JTA、JavaMail、JMS）。 Java EE 可以用于构建分布式、可移植、健壮、可伸缩和安全的服务端 Java 应用程序，例如 Web 应用程序。
+
+简单来说，Java SE 是 Java 的基础版本，Java EE 是 Java 的高级版本。Java SE 更适合开发桌面应用程序或简单的服务器应用程序，Java EE 更适合开发复杂的企业级应用程序或 Web 应用程序。
+
+除了 Java SE 和 Java EE，还有一个 Java ME（Java Platform，Micro Edition）。Java ME 是 Java 的微型版本，主要用于开发嵌入式消费电子设备的应用程序，例如手机、PDA、机顶盒、冰箱、空调等。Java ME 无需重点关注，知道有这个东西就好了，现在已经用不上了。
+
+
 ### `@PostConstruct`注解
 
 #### 1.**定义和基本用法**
@@ -58,21 +69,21 @@ public void init() {
 
 
 
-## 第一章 Java EE企业级应用入门
+### Spring的分层结构如何理解？
 
-#### javaEE在企业应用中的地位？
+Spring框架的分层结构是指将应用程序按照不同的功能和职责划分成不同的层次，每一层都有特定的功能和责任，各层之间通过定义清晰的接口和协议进行通信，以实现代码的解耦和扩展性的提高。
 
+在Spring框架中，经常使用的分层结构通常包括以下几个层次：
 
+- 展示层（Presentation Layer）：展示层主要负责处理用户的请求和响应，包括用户界面的展示和与用户的交互。在Spring框架中，展示层通常使用Spring MVC模块，通过控制器和视图来完成请求的处理和结果的展示。
 
-#### Java SE和Java EE的联系和区别？
+- 业务逻辑层（Business Layer）：业务逻辑层是应用程序的核心，负责处理业务流程和逻辑。该层通常包括一些服务类，用于组织和处理关键的业务逻辑。在Spring框架中，业务逻辑层可以使用Spring的依赖注入和声明式事务管理等特性来提高代码的可维护性和可测试性。
 
-- Java SE（Java Platform，Standard Edition）: Java 平台标准版，Java 编程语言的基础，它包含了支持 Java 应用程序开发和运行的核心类库以及虚拟机等核心组件。Java SE 可以用于构建桌面应用程序或简单的服务器应用程序。
+- 数据访问层（Data Access Layer）：数据访问层用于处理与数据库或其他持久化存储相关的操作。该层主要负责数据库的连接、查询、更新等操作，并将结果返回给业务逻辑层。在Spring框架中，可以使用Spring的JdbcTemplate或者Hibernate等ORM框架来简化数据访问层的开发。
 
-- Java EE（Java Platform, Enterprise Edition ）：Java 平台企业版，建立在 Java SE 的基础上，包含了支持企业级应用程序开发和部署的标准和规范（比如 Servlet、JSP、EJB、JDBC、JPA、JTA、JavaMail、JMS）。 Java EE 可以用于构建分布式、可移植、健壮、可伸缩和安全的服务端 Java 应用程序，例如 Web 应用程序。
+- 基础设施层（Infrastructure Layer）：基础设施层用于提供一些基础的支持和服务，例如日志、缓存、消息队列等。该层的主要功能是为其他层提供便利和增强，以提高应用程序的性能和可靠性。在Spring框架中，可以使用Spring的AOP功能来实现基础设施层的功能。
 
-简单来说，Java SE 是 Java 的基础版本，Java EE 是 Java 的高级版本。Java SE 更适合开发桌面应用程序或简单的服务器应用程序，Java EE 更适合开发复杂的企业级应用程序或 Web 应用程序。
-
-除了 Java SE 和 Java EE，还有一个 Java ME（Java Platform，Micro Edition）。Java ME 是 Java 的微型版本，主要用于开发嵌入式消费电子设备的应用程序，例如手机、PDA、机顶盒、冰箱、空调等。Java ME 无需重点关注，知道有这个东西就好了，现在已经用不上了。
+通过将应用程序划分成不同的层次，可以使代码更加模块化和可维护，不同的层级之间通过接口进行通信，降低了各层之间的耦合度，以便于扩展和修改。同时，Spring框架提供了丰富的功能和特性，可以简化每个层的开发和配置，提高开发效率。
 
 
 
