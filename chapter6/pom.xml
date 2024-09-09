@@ -20,27 +20,18 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>javax.servlet</groupId>-->
-<!--            <artifactId>javax.servlet-api</artifactId>-->
-<!--            <version>4.0.1</version>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.1.0</version>
-        </dependency>
-
+        <!-- spring-webmvc依赖，即包含了spring-context依赖，所以不需要重复引入 -->
+        <!--
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>6.1.6</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>6.1.6</version>
+            <version>5.3.23</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
