@@ -51,14 +51,18 @@
 
 `DispatcherServlet`控制器类是由`spring-webmvc-6.1.6`提供的，而`spring-webmvc-6.1.6`版本对应的是`jakarta`而非`javax`，并且运行所需要的是`Tomcat10`版本，`Tomcat9`版本启动项目，虽然能够启动成功，但是项目所提供的服务接口，浏览器无法访问。
 
-> 需要注意的是，`spring-webmvc`依赖，即包含了`spring-context`依赖，所以不需要重复引入。
->
-> ```xml
-> <!-- spring-webmvc依赖，即包含了spring-context依赖，所以不需要重复引入 -->
-> <dependency>
->     <groupId>org.springframework</groupId>
->     <artifactId>spring-context</artifactId>
->     <version>6.1.6</version>
-> </dependency>
-> ```
+![微信截图 20240909162517](https://img.picgo.net/2024/09/09/_20240909162517a0e9272df12e73ba.jpeg)
+
+> 从 Spring Framework 6.0 开始，Spring 已升级到 Jakarta EE 9 级别（例如 Servlet 5.0、JPA 3.0），基于 jakarta 命名空间而不是传统的 javax 包。由于 EE 9 是最低版本，并且已经支持 EE 10，Spring 准备为 Jakarta EE API 的进一步发展提供开箱即用的支持。Spring Framework 6.0 与 Tomcat 10.1、Jetty 11 和 Undertow 2.3 作为 Web 服务器完全兼容，并且还与 Hibernate ORM 6.1 完全兼容。
+
+**需要注意的是，`spring-webmvc`依赖，即包含了`spring-context`依赖，所以不需要重复引入。**
+
+```xml
+<!-- spring-webmvc依赖，即包含了spring-context依赖，所以不需要重复引入 -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>6.1.6</version>
+</dependency>
+```
 
