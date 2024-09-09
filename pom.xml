@@ -16,6 +16,7 @@
         <module>chapter4experiment</module>
         <module>chapter5</module>
         <module>chapter5experiment</module>
+        <module>chapter6</module>
     </modules>
 
     <properties>
