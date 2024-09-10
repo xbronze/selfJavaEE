@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--指定Spring扫描的包，并开启自动扫描功能-->
+    <context:component-scan base-package="com.dingli.chapter14.service" />
+
+    <!--引入属性文件-->
+    <context:property-placeholder location="classpath:database.properties" />
+
+    <!--配置数据源-->
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource" >
+        <property name="driverClassName" value="${mysql.driver}"/>
+        <property name="url" value="${mysql.url}"/>
+        <property name="username" value="${mysql.username}"/>
+        <property name="password" value="${mysql.password}"/>
+    </bean>
+
+    <!--定义SqlSessionFactoryBean类的Bean，并注入数据源-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--定义MapperScannerConfigurer类的Bean，并指定MyBatis扫描的包-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dingli.chapter14.dao"/>
+    </bean>
+
+
+</beans>
