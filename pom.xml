@@ -18,6 +18,7 @@
         <module>chapter5experiment</module>
         <module>chapter6</module>
         <module>chapter14</module>
+        <module>gitList</module>
     </modules>
 
     <properties>

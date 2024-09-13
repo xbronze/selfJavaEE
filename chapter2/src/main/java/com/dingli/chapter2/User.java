@@ -7,7 +7,13 @@ package com.dingli.chapter2;
  */
 public class User {
 
+    private String name;
+
     public void sayHello() {
-        System.out.println("hello world Spring！");
+        System.out.println("hello world Spring！" + name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
