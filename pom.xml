@@ -12,11 +12,13 @@
         <module>chapter1</module>
         <module>chapter2</module>
         <module>chapter3</module>
+        <module>chapter3experiment</module>
         <module>chapter4</module>
         <module>chapter4experiment</module>
         <module>chapter5</module>
         <module>chapter5experiment</module>
         <module>chapter6</module>
+        <module>chapter7</module>
         <module>chapter14</module>
         <module>gitList</module>
     </modules>
