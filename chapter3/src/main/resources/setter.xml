@@ -17,8 +17,9 @@
 		<property name="sugar" value="3分糖" />
 	</bean>
 
-	<bean id="shop" class="com.dingli.chapter3.bean.setter.Shop">
+	<!-- 根据名称，自动装配bubbleTea对象 -->
+	<bean id="shop" class="com.dingli.chapter3.bean.setter.Shop" autowire="byName">
 		<property name="shopName" value="小小奶茶店setter"/>
-		<property name="bubbleTea" ref="bubbleTea"/>
+<!--		<property name="bubbleTea" ref="bubbleTea"/>-->
 	</bean>
 </beans>

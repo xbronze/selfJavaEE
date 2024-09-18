@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--定义Bean，id属性值为scope，指定Bean的实现类为Scope，并设置作用域为prototype-->
+    <bean id="scope" class="com.dingli.chapter3.bean.scope.Scope" scope="prototype" />
+</beans>
