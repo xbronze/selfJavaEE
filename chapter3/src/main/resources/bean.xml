@@ -8,7 +8,7 @@
 
     <!-- bean definitions here -->
 
-	<bean id="user" class="com.dingli.chapter2.User" scope="singleton">
+	<bean id="user" class="com.dingli.chapter3.User" scope="singleton">
 		<property name="name" value="zhangsan"/>
 		<property name="age" value="15" />
 	</bean>
