@@ -6,7 +6,7 @@
          id="WebApp_ID" version="4.0">
 
 
-<filter>
+    <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 

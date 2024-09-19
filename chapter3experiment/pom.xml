@@ -24,6 +24,7 @@
             <version>5.3.23</version>
         </dependency>
 
+        <!-- 注解的依赖 -->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
