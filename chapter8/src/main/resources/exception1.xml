@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 指定Spring MVC扫描的包 -->
+    <context:component-scan base-package="com.dingli.chapter8.controller" />
+
+    <!-- 配置视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置异常处理器-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!-- 指定异常名称，异常处理页面可以使用其获取异常信息 -->
+        <property name="exceptionAttribute" value="exp"/>
+        <!-- 指定默认的异常处理页面为defaultExp.jsp -->
+        <property name="defaultErrorView" value="defaultExp"/>
+        <!-- 指定不同类型异常对应跳转的页面 -->
+        <property name="exceptionMappings">
+            <props>
+                <!-- IO异常处理页面为IOExp.jsp -->
+                <prop key="IOException">IOExp</prop>
+                <!-- 自定义异常处理页面为customExp.jsp -->
+                <prop key="CustomException">customExp</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
