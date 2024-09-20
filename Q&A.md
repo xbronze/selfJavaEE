@@ -93,3 +93,10 @@ JSP文件中也引入了JSTL标签
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 ```
 
+项目运行依旧报错：
+
+![%DISPLAY_TITLE%](https://img.picgo.net/2024/09/19/_20240919091411264cb83270323cba.jpeg)
+
+解决办法（暂行）：
+
+下载所依赖的两个jar包`jstl-1.2.jar`和`standard-1.1.2.jar`，把这两个jar包放到tomcat服务器的lib目录里面
