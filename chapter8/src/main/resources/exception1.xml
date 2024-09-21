@@ -7,7 +7,7 @@ http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 指定Spring MVC扫描的包 -->
-    <context:component-scan base-package="com.dingli.chapter8.controller" />
+    <context:component-scan base-package="com.dingli.chapter8" />
 
     <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

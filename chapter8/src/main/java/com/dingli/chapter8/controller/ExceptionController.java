@@ -1,9 +1,8 @@
 package com.dingli.chapter8.controller;
 
+import com.dingli.chapter8.exp.CustomException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +13,7 @@ import java.io.FileNotFoundException;
  * @description: TODO
  */
 @Controller
+@RequestMapping("/exp")
 public class ExceptionController {
 
     @RequestMapping("/showArithmetic")

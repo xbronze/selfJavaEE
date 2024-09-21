@@ -12,6 +12,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:exception2.xml</param-value>
+<!--            <param-value>classpath:interceptor.xml</param-value>-->
         </init-param>
         <!-- 启动时加载创建 -->
         <load-on-startup>1</load-on-startup>
