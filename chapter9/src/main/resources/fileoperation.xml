@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- bean definitions here -->
+	<!-- 指定Spring MVC扫描的包 -->
+	<context:component-scan base-package="com.dingli.chapter9" />
+
+	<!-- 配置视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!--配置视图控制器，指定文件下载页面的映射路径-->
+	<!--	<mvc:view-controller path="/file/upload" view-name="fileUpload" />-->
+	<mvc:view-controller path="/file/filedownload" view-name="fileDownload"/>
+
+	<!--配置注解驱动-->
+	<mvc:annotation-driven/>
+
+
+	<!--配置文件上传解析器-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!--指定请求的编码方式-->
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<!--指定允许上传文件的大小，此处设置最大值为1 M，单位为字节-->
+		<property name="maxUploadSize" value="1024000"></property>
+	</bean>
+</beans>
