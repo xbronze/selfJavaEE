@@ -246,149 +246,43 @@ Spring AOP的实现机制？
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="accountManage" class="com.dingli.jdbc.service.impl.AccountManageImpl">
-        <property name="jdbcTemplate" ref="jdbcTemplate" />
-    </bean>
 ```
 
-### 代码类
 
-`IAccountManage接口`
 
-```java
-public interface IAccountManage {
-
-    // 插入账户记录
-    public void addAccount(Account account);
-
-    // 更新账户记录
-    public void updateAccount(Account account);
-
-    // 查询单个账户记录
-    public void queryAccountById(Integer id);
-
-    // 查询所有账户记录
-    public void queryAllAccount();
-
-    // 删除指定账户记录
-    public void deleteAccount(Integer id);
-}
+### 事务的传播行为
 
 ```
+@Service
+public AService A{
 
-`AccountManageImpl实现类`
-
-```java
-public class AccountManageImpl implements IAccountManage {
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    @Override
-    public void addAccount(Account account) {
-        //定义SQL插入语句，实现插入一条账户记录
-        String sql = "insert into accounts(id,userName,balance) value(?,?,?)";
-        //定义数组来存放SQL语句中的参数
-        Object[] obj = new Object[] {
-                account.getId(),
-                account.getUserName(),
-                account.getBalance()
-        };
-        //执行SQL插入语句，返回执行添加操作的记录条数
-        int num = jdbcTemplate.update(sql, obj);
-        if (num > 0) {
-            System.out.println("成功插入了" + num + "条账户记录");
-            System.out.println(account);
-        }
-        else
-            System.out.println("执行插入账户记录失败");
-
-    }
-
-    @Override
-    public void updateAccount(Account account) {
-        //定义SQL更新语句，实现根据账户id更新余额
-        String sql = "update accounts set balance=? where id = ?";
-        //定义数组来存放SQL语句中的参数
-        Object[] params = new Object[] {account.getBalance(), account.getId()};
-        //执行SQL更新语句，返回执行更新操作的记录条数
-        int num = jdbcTemplate.update(sql, params);
-        if (num > 0) {
-            System.out.println("成功更新了" + num + "条账户记录");
-        }
-        else
-            System.out.println("执行更新账户记录失败");
-
-    }
-
-    @Override
-    public void queryAccountById(Integer id) {
-        //定义SQL查询语句，实现根据账户id查询账户记录
-        String sql = "select * from accounts where id = ?";
-        //创建一个BeanPropertyRowMapper对象
-        RowMapper<Account> rowMapper;
-        rowMapper = new BeanPropertyRowMapper<Account>(Account.class);
-        //执行SQL查询语句，并通过rowMapper返回Account类对象
-        Account account = jdbcTemplate.queryForObject(sql, rowMapper, id);
-        System.out.println("成功查询了1个账户记录");
-        System.out.println(account);
-
-    }
-
-    @Override
-    public void queryAllAccount() {
-        //定义SQL查询语句，实现查询所有的账户记录
-        String sql = "select * from accounts";
-        //创建一个BeanPropertyRowMapper对象
-        RowMapper<Account> rowMapper;
-        rowMapper = new BeanPropertyRowMapper<Account>(Account.class);
-        //执行SQL查询语句，并通过rowMapper返回存放Account类对象的List集合
-        List<Account> accounts = jdbcTemplate.query(sql, rowMapper);
-        System.out.println("成功查询了所有的账户记录");
-        for (Account account:accounts) {		//循环输出每个账户记录
-            System.out.println(account);
-        }
-
-    }
-
-    @Override
-    public void deleteAccount(Integer id) {
-        //定义SQL删除语句，实现根据id删除账户记录
-        String sql = "delete from accounts where id = ? ";
-        //执行SQL删除语句，返回执行删除操作的记录条数
-        int num = jdbcTemplate.update(sql, id);
-        if (num > 0)
-            System.out.println("成功删除了" + num + "条账户记录");
-        else
-            System.out.println("执行删除账户记录失败");
-
-    }
+	@Autowired
+	private BService bservice;
+	
+	public void test{
+		xxxx();
+		bservice.aaaa();
+		yyyy();
+	}
 }
 ```
 
-`JdbcTemplateTest.class`
+事务传播行为（propagation behavior）指的就是当一个事务方法被另一个事务方法调用时，这个事务方法应该如何进行。
 
-```java
-public class JdbcTemplateTest {
+ 正常来说有几种解决方案： 
 
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
-        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        String sql = "create table if not exists accounts (id int, userName varchar(50), balance double)";
-        jdbcTemplate.execute(sql);
-        System.out.println("数据库accounts创建成功");
-        IAccountManage accountManage = context.getBean("accountManage", IAccountManage.class);
-        Account account = new Account();
-        account.setId(1);
-        account.setUserName("张三");
-        account.setBalance(2000.0);
-        accountManage.addAccount(account);
-    }
-}
-```
+1. 融入事务：直接去掉serviceB中关于开启事务和提交事务的begin和commit，融入到serviceA的事务中。问题：B事务的错误会引起A事务的回滚。 
+2. 挂起事务：如果不想B事务的错误引起A事务的回滚，可以开启两个连接，一个执行A一个执行B，互不影响，执行到B的时候把A挂起新起连接去执行B，B执行完了再唤醒A执行。
+3. 嵌套事务：MySQL中可以通过给B事务加savepoint和rollback去模拟嵌套事务，把B设置成伪事务。 
+
+spring中的事务传播行为： 
+
+1. PROPAGATION\_REQUIRED（需要）：如果存在一个事务，则支持当前事务。如果没有事务则开启一个新的事务。（A如果存在事务，则B融入A事务，如果没有则新起一个事务）大部分的修改操作使用 
+2. PROPAGATION\_SUPPORTS（支持）：如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行。（A有，则B融入，A没有，则非事务执行）大部分的查询操作 
+3. PROPAGATION\_MANDATORY（强制性）：如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。（A有，则B融入，A没有，则抛异常） 
+4. PROPAGATION\_REQUIRES\_NEW（需要新的）：如果一个事务已经存在，则先将这个存在的事务挂起。如果没有，则新起一个事务执行。（A有，则B挂起执行，A没有则新起一个事务） 
+5. PROPAGATION\_NOT\_SUPPORTED（不支持）：总是非事务地执行，并挂起任何存在的事务。（A有，则挂起B非事务执行） 
+6. PROPAGATION\_NEVER（从不）：总是非事务地执行，如果存在一个活动事务，则抛出异常。（A有，则抛异常） 7. PROPAGATION\_NESTED（嵌套的）：如果一个活动的事务存在，则运行在一个嵌套的事务中。 如果没有活动事务, 则按TransactionDefinition.PROPAGATION\_REQUIRED 属性执行。（A有，则B用savapoint方式嵌套执行与A）
 
 
 
