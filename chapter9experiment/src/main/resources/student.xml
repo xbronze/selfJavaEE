@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.dingli.chapter9experiment" />
+    <!--配置注解驱动-->
+    <mvc:annotation-driven/>
+    <!-- 配置视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/studentpages/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!--配置视图控制器，指定添加信息页面的映射路径-->
+    <mvc:view-controller path="/system/addInfor" view-name="addInfor"/>
+
+    <!--配置文件上传解析器-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--指定请求的编码方式-->
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <!--指定允许上传文件的大小，此处设置最大值为1 M，单位为字节-->
+        <property name="maxUploadSize" value="1024000"></property>
+    </bean>
+    <!--配置不拦截图片静态资源-->
+    <mvc:resources mapping="/images/**" location="/images/"/>
+
+</beans>
