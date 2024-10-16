@@ -252,6 +252,8 @@ Spring AOP的实现机制？
 
 ### 事务的传播行为
 
+[一个视频教会你spring的事务传播行为](https://www.bilibili.com/video/BV1R8411c7m2/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=4ab5c676cbad42c66974269867c2b1ee)
+
 ```
 @Service
 public AService A{
