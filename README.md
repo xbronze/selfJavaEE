@@ -349,3 +349,22 @@ getAttribute()可以得到对象。。。
 getParameter可以得到页面传来的参数如？id=123之类的。
 
 getAttribute()常用于servlet页面传递参数给jsp
+
+
+## Spring MVC的工作流程
+
+![spring mvc dispatcher servlet flow compression](https://img.picgo.net/2024/10/16/spring-mvc-dispatcher-servlet-flow-compression02ef51e988c09225.png)
+
+1. 客户端向ｗｅｂ服务器（如tomcat）发送一个http请求，web服务器对http请求进行解析，解析后的url地址如果匹配到DispatchServlet的映射路径（通过web.xml中的servlet-mapping配置），web容器就会将请求交给DispatchServlet处理
+
+2. DispatcherServlet接收到这个请求后，再对URL进行解析，得到请求资源标识符（URI）。然后调用相应方法得到的HandlerMapping对象，再根据URI，调用这个对象的相应方法获得Handler对象以及它对应的拦截器。（在这里只是获得了Handler对象，并不会操作它，在SpringMVC中，是通过HandlerAdapter对Handler进行调用、控制的）
+
+3. DispatcherServlet根据得到的Handler对象，选择一个合适的HandlerAdapter，创建其实例对象，执行拦截器中的preHandler()方法。
+
+4. 在拦截器方法中，提取请求中的数据模型，填充Handler入参，所以所有准备工作都已做好，开始执行Handler（我们写的controller代码并不是能被直接执行，需要有刚才那些操作，才能转变为Handler被执行）。
+
+5. Handler执行完毕后返回一个ModelAndView对象给DispatcherServlet。
+
+6. 这个ModleAndView只是一个逻辑视图，并不是真正的视图，DispatcherServlet通过ViewResolver视图解析器将逻辑视图转化为真正的视图（通俗理解为将视图名称补全，如加上路径前缀，加上.jsp后缀，能指向实际的视图）。
+
+7. DispatcherServlet通过Model将ModelAndView中得到的处数据解析后用于渲染视图。将得到的最终视图通过http响应返回客户端。
