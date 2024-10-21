@@ -27,6 +27,7 @@
         <module>chapter9experiment</module>
         <module>chapter14</module>
         <module>gitList</module>
+        <module>miniProgram</module>
     </modules>
 
     <properties>

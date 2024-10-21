@@ -290,7 +290,7 @@ spring中的事务传播行为：
 
 ## 第六章 Spring MVC
 
-## 依赖
+### 依赖
 
 ```xml
 
@@ -321,9 +321,19 @@ spring中的事务传播行为：
 
 
 
-## 第七章 数据绑定和请求响应
+### Spring MVC的工作流程
 
-### 课后思考（作业）
+![spring mvc dispatcher servlet flow compression](https://img.picgo.net/2024/10/16/spring-mvc-dispatcher-servlet-flow-compression02ef51e988c09225.png)
+
+1. 客户端向ｗｅｂ服务器（如tomcat）发送一个http请求，web服务器对http请求进行解析，解析后的url地址如果匹配到DispatchServlet的映射路径（通过web.xml中的servlet-mapping配置），web容器就会将请求交给DispatchServlet处理
+2. DispatcherServlet接收到这个请求后，再对URL进行解析，得到请求资源标识符（URI）。然后调用相应方法得到的HandlerMapping对象，再根据URI，调用这个对象的相应方法获得Handler对象以及它对应的拦截器。（在这里只是获得了Handler对象，并不会操作它，在SpringMVC中，是通过HandlerAdapter对Handler进行调用、控制的）
+3. DispatcherServlet根据得到的Handler对象，选择一个合适的HandlerAdapter，创建其实例对象，执行拦截器中的preHandler()方法。
+4. 在拦截器方法中，提取请求中的数据模型，填充Handler入参，所以所有准备工作都已做好，开始执行Handler（我们写的controller代码并不是能被直接执行，需要有刚才那些操作，才能转变为Handler被执行）。
+5. Handler执行完毕后返回一个ModelAndView对象给DispatcherServlet。
+6. 这个ModleAndView只是一个逻辑视图，并不是真正的视图，DispatcherServlet通过ViewResolver视图解析器将逻辑视图转化为真正的视图（通俗理解为将视图名称补全，如加上路径前缀，加上.jsp后缀，能指向实际的视图）。
+7. DispatcherServlet通过Model将ModelAndView中得到的处数据解析后用于渲染视图。将得到的最终视图通过http响应返回客户端。
+
+## 第七章 数据绑定和请求响应
 
 #### HttpServletRequest的parameter和attribute的区别？
 
@@ -351,20 +361,129 @@ getParameter可以得到页面传来的参数如？id=123之类的。
 getAttribute()常用于servlet页面传递参数给jsp
 
 
-## Spring MVC的工作流程
 
-![spring mvc dispatcher servlet flow compression](https://img.picgo.net/2024/10/16/spring-mvc-dispatcher-servlet-flow-compression02ef51e988c09225.png)
+### mvc:annotation-driven 注解的作用
 
-1. 客户端向ｗｅｂ服务器（如tomcat）发送一个http请求，web服务器对http请求进行解析，解析后的url地址如果匹配到DispatchServlet的映射路径（通过web.xml中的servlet-mapping配置），web容器就会将请求交给DispatchServlet处理
+#### 1.自动注册映射处理器和适配器
 
-2. DispatcherServlet接收到这个请求后，再对URL进行解析，得到请求资源标识符（URI）。然后调用相应方法得到的HandlerMapping对象，再根据URI，调用这个对象的相应方法获得Handler对象以及它对应的拦截器。（在这里只是获得了Handler对象，并不会操作它，在SpringMVC中，是通过HandlerAdapter对Handler进行调用、控制的）
+这是该注解的主要功能，添加< mvc:annotation-driven/>注解后，容器中会<自动注册HandlerMapping与HandlerAdapter 两个bean。省去手动注册HandlerMapping和HandlerAdapter的步骤。
 
-3. DispatcherServlet根据得到的Handler对象，选择一个合适的HandlerAdapter，创建其实例对象，执行拦截器中的preHandler()方法。
+当配置了< mvc:annotation-driven/>后，Spring就知道了我们启用注解驱动。然后Spring通过< context:component-scan/>标签的配置，会自动为我们将扫描到的@Component，@Controller，@Service，@Repository等注解标记的组件注册到工厂中，来处理我们的请求。
 
-4. 在拦截器方法中，提取请求中的数据模型，填充Handler入参，所以所有准备工作都已做好，开始执行Handler（我们写的controller代码并不是能被直接执行，需要有刚才那些操作，才能转变为Handler被执行）。
+HandlerMapping的实现类的作用：将请求映射到带@RequestMapping注释的控制器方法，将URL路径映射到控制器bean名称。
+HandlerAdapter的实现类的作用：实现类RequestMappingHandlerAdapter，处理请求的适配器，确定调用哪个类的哪个方法，并且构造方法参数，返回值。
 
-5. Handler执行完毕后返回一个ModelAndView对象给DispatcherServlet。
+在spring mvc 3.1以上，DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter对应变更为：
+DefaultAnnotationHandlerMapping -> RequestMappingHandlerMapping
+AnnotationMethodHandlerAdapter -> RequestMappingHandlerAdapter
+AnnotationMethodHandlerExceptionResolver -> ExceptionHandlerExceptionResolver
 
-6. 这个ModleAndView只是一个逻辑视图，并不是真正的视图，DispatcherServlet通过ViewResolver视图解析器将逻辑视图转化为真正的视图（通俗理解为将视图名称补全，如加上路径前缀，加上.jsp后缀，能指向实际的视图）。
+#### 2.映射异常处理
 
-7. DispatcherServlet通过Model将ModelAndView中得到的处数据解析后用于渲染视图。将得到的最终视图通过http响应返回客户端。
+处理@ExceptionHandler标注的异常处理函数：在dispatcherServlet中，当用户未注册自定义的ExceptionResolver时，自动注册AnnotationMethodHandlerExceptionResolver来对使用@ExceptionHandler标注的异常处理函数进行解析处理(这也导致当用户注册了自定义的exeptionResolver时将可能导致无法处理@ExceptionHandler)。
+
+#### 3.数据校验
+
+官方文档解释：“默认情况下，当在类路径中检测到诸如Hibernate Validator之类的Bean验证提供程序时，使用@EnableWebMvc或<mvc：annotation-driven>会通过LocalValidatorFactoryBean在Spring MVC中自动注册Bean验证支持。”
+
+要实现Hibernate Validator/JSR303 校验（或者其他各种校验），必须实现SpringMVC提供的一个接口：ValidatorFactory。LocalValidatorFactoryBean是ValidatorFactory的一个实现类。<mvc:annotation-driven ></mvc:annotation-driven>会在springmvc容器中自动加载一个LocalValidatorFactoryBean类，因此可以直接实现数据校验。
+
+就日常使用来说，比如支持@Valid等一系列校验注解。
+
+#### 4.数据类型转换和数据格式化
+
+< mvc:annotation-driven/>支持ConversionService，可以进行常见数据类型的转换和格式化。
+
+ConversionService：定义了一个统一的API，用于在运行时执行类型转换逻辑。大多数ConversionService实现还实现ConverterRegistry，该注册器提供用于注册转换器的SPI。在内部，ConversionService实现委派其注册的转换器执行类型转换逻辑。
+ConversionService会在应用程序启动时实例化，然后在多个线程之间共享。
+在Spring应用程序中，通常会为每个Spring容器（或ApplicationContext）配置一个ConversionService实例。
+
+FormattingConversionServiceFactoryBean：一个工厂，提供对FormattingConversionService的便捷访问，该服务配置有用于常见类型（例如数字和日期时间）的转换器和格式化程序。
+
+①默认：
+添加 < mvc:annotation-driven/>后，会默认创建一个ConversionService，即 FormattingConversionServiceFactoryBean。
+使用FormattingConversionServiceFactoryBean可以让SpringMVC支持@NumberFormat和@DateTimeFormat等Spring内部自定义的转换器。
+
+②：自定义：
+默认的ConversionService可以在字符串，数字，枚举，集合，映射和其他常见类型之间进行转换。
+如果要实现其他的类型转换，比如将字符串 “LiHua”-23-“男” 转换为Student实体类，可以自定义类型转换器。
+要支持自己自定义的格式器和转换器（实现Converter，ConverterFactory或GenericConverter接口），只需自定义相应的类并加入IOC容器，然后通过设置converters属性将自定义的转换器注册到ConversionService即可。
+
+XML配置文件：
+
+```xml
+   <mvc:annotation-driven conversion-service="conversionService"/>
+   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+           <set>
+              <ref bean="employeeConverter"/>
+          </set>
+       </property>
+  </bean>
+```
+
+#### 5.支持使用@RequestBody、@ResponseBody
+
+#### 6.支持静态资源文件加载和请求映射同时使用
+在配置完静态资源访问后，如果没有配置< mvc:annotation-driven/>，springmvc将只能访问静态资源，而无法进行请求映射。
+因此，有静态资源文件需要加载的时候，一定要配置< mvc:annotation-driven/>。
+
+< mvc:annotation-driven/>允许将DispatcherServlet映射到“ /”（从而覆盖了容器默认Servlet的映射），同时仍允许容器默认Servlet处理静态资源请求。 它使用URL映射“ / **”配置DefaultServletHttpRequestHandler，并且相对于其他URL映射具有最低优先级。
+
+关于静态资源访问的配置：
+在springmvc中，直接访问静态资源会404，因为之前配置的拦截器会将所有的请求通过/拦截，交给mvc的入口DispatcherServlet去匹配@RequestMapping/path，访问不到就报错了。
+
+解决：如果是需要mvc处理的，则交给@RequestMapping；如果不需要mvc处理，则使用服务器（Tomcat）默认的servlet处理：对应的请求交给servlet处理，没有对应的servlet则直接访问。默认的servlet在Tomcat配置文件\conf/web.xml中。
+
+加载静态资源的三种方案：
+①使用< mvc:default-servlet-handler/>。
+②配置/XX /**将静态资源文件映射到 ResourceHttpRequestHandler 进行处理。
+
+```xml
+ <mvc:resources mapping="/js/**" location="/js/"></mvc:resources>
+ <mvc:resources mapping="/css/**" location="/css/"></mvc:resources>
+```
+
+③激活Tomcat的defaultServlet来处理静态文件。
+
+```xml
+<servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.js</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+</servlet-mapping>
+```
+
+注意：如果不使用< mvc:resources/>注册HandlerMapping，而要设置自己的自定义HandlerMapping实例，请确保将其order属性设置为小于DefaultServletHttpRequestHandler的Integer.MAX_VALUE的值。
+因为spring 会先执行 order 值比较小的，默认的应该servlet在最后执行，以便于处理不可能进行请求映射的静态资源访问。
+
+**补充理解：**
+
+DefaultAnnotationHandlerMapping 的 order 属性值是：0。
+<mvc:resources/ >自动注册的 SimpleUrlHandlerMapping 的 order 属性值是： 2147483646。
+< mvc:default-servlet-handler/>自动注册的 SimpleUrlHandlerMapping 的 order 属性值是：2147483647。
+因此映射的顺序是：注解映射——<mvc:resources/ >映射的静态资源——< mvc:default-servlet-handler/> 兜底。
+
+#### 7.其他功能
+启用矩阵变量：在MVC命名空间中，<mvc：annotation-driven>元素具有应设置为true的enable-matrix-variables属性。 默认情况下，它设置为false。
+
+配置异步请求处理：MVC Java配置和MVC名称空间提供用于配置异步请求处理的选项。 WebMvcConfigurer具有方法configureAsyncSupport，而<mvc：annotation-driven>具有子元素。
+
+创建ContentNegotiationManager：在MVC命名空间中，<mvc：annotation-driven>元素具有content-negotiation-manager属性，该属性期望可以使用ContentNegotiationManagerFactoryBean创建ContentNegotiationManager。
+
+数据绑定支持。
+
+
+
+## < mvc:annotation-driven /> 和< context:annotation-config/>的关系：
+< mvc:annotation-driven />：虽然有这么多功能，但主要还是为了Spring MVC来用的，提供Controller请求转发，json自动转换等功能。
+
+< context:annotation-config/>：向 Spring 容器注册 4 个BeanPostProcessor。注册这4个 BeanPostProcessor的作用，就是为了系统能够识别相应的注解。常见的如：@ Resource 、@Required、@Autowired等。
+不过，其实包扫描配置<context:component-scan base-package=”XX.XX”/> 也提供上述功能，因此当启动用了包扫描就不必再配置< context:annotation-config/>了。
