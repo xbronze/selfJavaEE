@@ -16,4 +16,12 @@
     </bean>
 
     <mvc:annotation-driven />
+
+    <!--配置文件上传解析器-->
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <!--指定请求的编码方式-->
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <!--指定允许上传文件的大小，此处设置最大值为1 M，单位为字节-->
+        <property name="maxUploadSize" value="1024000"></property>
+    </bean>
 </beans>

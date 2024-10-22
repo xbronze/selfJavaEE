@@ -12,11 +12,6 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:springmvc.xml</param-value>
         </init-param>
-
-        <init-param>
-            <param-name>Encoding</param-name>
-            <param-value></param-value>
-        </init-param>
         
         <load-on-startup>1</load-on-startup>
     </servlet>
