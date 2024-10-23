@@ -24,16 +24,13 @@ public class FileController {
 
     @RequestMapping("/upload")
     @ResponseBody
-    public Map<String, Object> fileUpload(MultipartFile file, HttpServletRequest request) {
+    public String fileUpload(MultipartFile file, HttpServletRequest request) {
 
         String path = request.getSession().getServletContext().getRealPath("upload");
         String targetFileName = iFileService.upload(file, path);
 
         String url = "http://192.168.72.133:8089/" + targetFileName;
 
-        Map<String, Object> fileMap = new HashMap<>();
-        fileMap.put("uri", targetFileName);
-        fileMap.put("url", url);
-        return fileMap;
+        return url;
     }
 }
