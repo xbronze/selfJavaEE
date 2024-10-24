@@ -109,10 +109,30 @@ JSP文件中也引入了JSTL标签
 
 
 
-‌**406错误的核心原因**‌是根据请求中接收到的主动协商头字段，目标资源没有用户代理可以接受的当前表示，并且服务器不愿意提供默认表示‌。
+**406错误的核心原因**‌是根据请求中接收到的主动协商头字段，目标资源没有用户代理可以接受的当前表示，并且服务器不愿意提供默认表示‌。
 
-‌**常见原因及解决方案**‌：
+**常见原因及解决方案**‌：
 
-1. ‌**请求地址后缀问题**‌：确保请求地址的后缀正确，不要写成.html而不写成.json或其他正确的格式‌。
-2. ‌**缺少转换依赖**‌：如果使用了[SpringMVC](https://www.baidu.com/s?sa=re_dqa_generate&wd=SpringMVC&rsv_pq=bf0a37d700011cda&oq=406 根据请求中接收到的主动协商头字段%2C目标资源没有用户代理可以接受的当前表示%2C&rsv_t=72435P/1rntc9AieOQ23N0G7cX5HwruWQmhHry8QliIFcN+v9owPvT9+4+gjcNB9wbff&tn=baiduhome_pg&ie=utf-8)并设置了[ResponseBody](https://www.baidu.com/s?sa=re_dqa_generate&wd=ResponseBody&rsv_pq=bf0a37d700011cda&oq=406 根据请求中接收到的主动协商头字段%2C目标资源没有用户代理可以接受的当前表示%2C&rsv_t=72435P/1rntc9AieOQ23N0G7cX5HwruWQmhHry8QliIFcN+v9owPvT9+4+gjcNB9wbff&tn=baiduhome_pg&ie=utf-8)，需要确保有[Jackson包](https://www.baidu.com/s?sa=re_dqa_generate&wd=Jackson包&rsv_pq=bf0a37d700011cda&oq=406 根据请求中接收到的主动协商头字段%2C目标资源没有用户代理可以接受的当前表示%2C&rsv_t=72435P/1rntc9AieOQ23N0G7cX5HwruWQmhHry8QliIFcN+v9owPvT9+4+gjcNB9wbff&tn=baiduhome_pg&ie=utf-8)或其他JSON处理库的依赖‌。
-3. ‌**配置问题**‌：在[Spring](https://www.baidu.com/s?sa=re_dqa_generate&wd=Spring&rsv_pq=bf0a37d700011cda&oq=406 根据请求中接收到的主动协商头字段%2C目标资源没有用户代理可以接受的当前表示%2C&rsv_t=72435P/1rntc9AieOQ23N0G7cX5HwruWQmhHry8QliIFcN+v9owPvT9+4+gjcNB9wbff&tn=baiduhome_pg&ie=utf-8)配置文件中开启[mvc注解驱动](https://www.baidu.com/s?sa=re_dqa_generate&wd=mvc注解驱动&rsv_pq=bf0a37d700011cda&oq=406 根据请求中接收到的主动协商头字段%2C目标资源没有用户代理可以接受的当前表示%2C&rsv_t=72435P/1rntc9AieOQ23N0G7cX5HwruWQmhHry8QliIFcN+v9owPvT9+4+gjcNB9wbff&tn=baiduhome_pg&ie=utf-8)，即在配置文件中添加`<mvc:annotation-driven />`。
+1. **请求地址后缀问题**‌：确保请求地址的后缀正确，不要写成.html而不写成.json或其他正确的格式‌。
+2. **缺少转换依赖**‌：添加依赖
+```xml
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.17.2</version>
+</dependency>
+```
+3. **配置问题**‌：在配置文件中添加`<mvc:annotation-driven />`。
+
+## 安全性、客户端无法访问
+
+在Java Web项目中，js文件不能放在WEB-INF目录下的主要原因是为了安全性。WEB-INF目录是Java Web应用的安全目录，其主要目的是限制外部访问，保护应用的安全。具体来说，WEB-INF目录下的资源文件对客户端是不可见的，客户端无法直接访问到这个目录下的文件‌。
+
+为什么不能放在WEB-INF目录下
+‌安全性‌：WEB-INF目录下的资源文件（如js、css、images等）对客户端是不可见的，这样可以防止外部用户直接访问这些文件，从而提高应用的安全性‌12。
+‌访问限制‌：客户端无法直接通过URL访问WEB-INF目录下的文件。例如，如果尝试通过超链接或JavaScript的location.href属性直接转向到WEB-INF下的页面，这些请求会被服务器拒绝，因为这些请求是客户端发起的‌。
+替代方案
+为了在Web应用中安全地使用js文件，可以将js文件放在Web应用的公共目录下，如WebRoot或webapp目录。这样，客户端可以正常访问这些文件，同时应用的安全性也不会受到影响‌。
+
+通过以上解释，可以更好地理解为什么在Java Web项目中js文件不能放在WEB-INF目录下，以及如何安全地使用这些文件。
