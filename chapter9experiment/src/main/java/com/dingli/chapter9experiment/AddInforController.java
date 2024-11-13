@@ -34,7 +34,8 @@ public class AddInforController {
         }
 
         //设置student的requestPath和photoName属性
-        student.setRequestPath(filePath);
+        String path2 = request.getServletContext().getContextPath();
+        student.setRequestPath(path2 + "/images/" + originalFilename);
         student.setPhotoName(originalFilename);
         //创建ModelAndView类对象
         ModelAndView modeAndView = new ModelAndView();
