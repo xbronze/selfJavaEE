@@ -1,6 +1,6 @@
 ## 笔记
 
-### Java SE和Java EE的联系和区别？
+### 1 Java SE和Java EE的联系和区别？
 
 - Java SE（Java Platform，Standard Edition）: Java 平台标准版，Java 编程语言的基础，它包含了支持 Java 应用程序开发和运行的核心类库以及虚拟机等核心组件。Java SE 可以用于构建桌面应用程序或简单的服务器应用程序。
 
@@ -10,7 +10,7 @@
 
 除了 Java SE 和 Java EE，还有一个 Java ME（Java Platform，Micro Edition）。Java ME 是 Java 的微型版本，主要用于开发嵌入式消费电子设备的应用程序，例如手机、PDA、机顶盒、冰箱、空调等。Java ME 无需重点关注，知道有这个东西就好了，现在已经用不上了。
 
-### Spring的分层结构如何理解？
+### 2 Spring的分层结构如何理解？
 
 Spring框架的分层结构是指将应用程序按照不同的功能和职责划分成不同的层次，每一层都有特定的功能和责任，各层之间通过定义清晰的接口和协议进行通信，以实现代码的解耦和扩展性的提高。
 
@@ -28,14 +28,14 @@ Spring框架的分层结构是指将应用程序按照不同的功能和职责�
 
 
 
-### 声明式事务
+### 3 声明式事务
 
 声明式事务(declarative transaction management)是Spring提供的对程序事务管理的方式之一。
 
 Spring的声明式事务顾名思义就是采用声明的方式来处理事务。这里所说的声明，就是指在配置文件中声明。用在Spring配置文件中声明式的处理事务来代替代码式的处理事务。这样的好处是，事务管理不侵入开发的组件，具体来说，业务逻辑对象就不会意识到正在事务管理之中，事实上也应该如此，因为事务管理是属于系统层面的服务，而不是业务逻辑的一部分，如果想要改变事务管理策划的话，也只需要在定义文件中重新配置即可；在不需要事务管理的时候，只要在设定文件上修改一下，即可移去事务管理服务，无需改变代码重新编译，这样维护起来极其方便。
 
 
-### `@PostConstruct`注解
+### 4 `@PostConstruct`注解
 
 #### 1.**定义和基本用法**
 
@@ -76,7 +76,7 @@ public void init() {
 
 
 
-### `@PostConstruct`与`@PreDestroy`注解
+### 5 `@PostConstruct`与`@PreDestroy`注解
 
 `@PostConstruct` 和`@ PreDestory `是两个作用于Servlet生命周期的注解。被这两个注解修饰的方法可以保证在整个Servlet生命周期只被执行一次，即使Web容器在其内部中多次实例化该方法所在的bean
 
@@ -92,8 +92,62 @@ public void init() {
 4、该方法抛出未检查的异常
 
 
+### 6 将Maven的所有模块打包成一个单独的JAR
 
+要将Maven的所有模块打包成一个单独的JAR，你可以在聚合模块（通常是父项目）中使用maven-assembly-plugin。以下是你需要做的：
 
+- 在聚合模块（父POM）中配置maven-assembly-plugin。
+- 创建一个assembly描述符文件，指定如何打包所有模块。
+
+以下是父POM的一个示例配置：
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+                <appendAssemblyId>false</appendAssemblyId>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <archive>
+                    <manifest>
+                        <mainClass></mainClass> <!-- 指定你的入口类，如果有的话 -->
+                    </manifest>
+                </archive>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>make-assembly</id> <!-- 必要的唯一标识符 -->
+                    <phase>package</phase> <!-- 绑定到打包生命周期阶段 -->
+                    <goals>
+                        <goal>single</goal> <!-- 执行单一构建 -->
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+确保你的所有子模块都已正确配置为父POM的子模块。然后运行mvn clean install来构建项目，最后运行mvn assembly:single来打包所有模块。 这将生成一个包含所有依赖项的单一JAR，你可以在target目录中找到它。
+
+### 7 maven是为了解决哪些问题？
+
+Maven是一个强大的Java项目管理工具，它旨在解决项目管理中的一系列问题，以提高开发效率和质量。Maven主要解决了以下几个方面的问题：
+
+- 项目结构混乱：Maven提供了一个标准的项目结构，使得项目的管理更加有序和一致。它使用约定俗成的目录结构，有助于开发人员对项目结构有明确的认识，更容易理解和维护代码。
+- 依赖管理复杂：Maven通过中央仓库和pom.xml文件来管理项目的依赖关系。开发者只需在pom.xml文件中指定所需的依赖，Maven就能自动下载并导入这些依赖，包括自动下载依赖需要的依赖并且保证版本没有冲突。这样大大简化了依赖管理过程，减少了手动管理依赖的繁琐和出错的可能性。
+- 构建过程繁琐：Maven提供了自动化构建工具，如编译、测试和打包等，这些都可以在命令行或构建脚本中完成。通过简单的命令操作，如“mvn clean install”，就可以完成项目的构建任务，大大简化了构建过程并提高了构建的可靠性和一致性。
+- 测试、打包、部署流程复杂：Maven不仅支持自动化构建，还提供了测试、打包和部署等功能的支持。通过配置相应的插件和参数，Maven可以自动运行测试用例、生成测试报告、打包项目文件以及将项目部署到指定的服务器或仓库中。
+- 代码质量难以保证：Maven可以与代码质量分析插件一起使用，如SonarQube等，对项目的代码质量进行自动化检查和分析。这些插件会生成代码质量报告，帮助开发者发现潜在的代码问题并进行修复，从而提高代码的质量和可维护性。
+- 文档生成困难：Maven支持项目文档的自动生成，包括API文档、项目报告等。通过配置相应的插件和参数，Maven可以自动生成项目的文档，并与项目一起发布或上传到在线文档管理系统中，方便其他开发人员或用户查阅和使用。
+- 跨平台构建问题：Maven的构建过程是跨平台的，它可以在不同的操作系统上运行，如Windows、Linux和Mac OS等。这使得Maven成为跨平台开发项目的理想选择，无需担心因操作系统差异而导致的构建问题。
+- 版本管理混乱：Maven支持版本管理功能，它可以通过在pom.xml文件中指定版本号来控制项目的编译、打包和部署等操作所使用的版本。此外，Maven还可以与版本控制系统（如Git）集成，方便开发者跟踪和管理代码变更。
+- 大型项目管理困难：对于大型项目，Maven支持多模块项目的构建和管理。通过将项目拆分成多个模块，每个模块都有自己的pom.xml文件和依赖关系，可以方便地管理和构建多个模块的项目。这有助于提高大型项目的协作效率和可维护性。
+
+综上所述，Maven通过提供标准化的项目结构、自动化的构建和测试工具、依赖管理、代码质量分析、文档生成、跨平台构建支持以及版本管理等功能，有效地解决了项目管理中的一系列问题，提高了开发效率和质量。
 
 ## 第三章 Spring Bean管理
 
